@@ -1,36 +1,180 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 	<head>
 		<meta charset="UTF-8" />
 		<title>Tudástár</title>
+		<link rel="manifest" href="/manifest.json" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="description" content="Tudástár a gyűjtőhely hasznos tananyagok számára." />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-		<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-defaults.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/style.min.css"
+			type="text/css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/@fortawesome/fontawesome-free/css/fontawesome.css"
+		/>
+		<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/brands.css" />
+		<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/regular.css" />
+		<link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free/css/solid.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css"
+			title="light"
+		/>
+		<link
+			rel="stylesheet alternative"
+			href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css"
+			title="dark"
+		/>
+		<link rel="stylesheet" href="/assets/css/styles.css" />
 	</head>
 	<body>
-		<div id="app"></div>
+		<div id="app"><div class="spinner">Loading...</div></div>
 		<script>
-			const repo = "https://github.com/LAIDBACK-PRODUCTIONS/tudastar";
+			const repo = "https://github.com/LAIDBACK-PRODUCTIONS/tudastar/";
 			const name = "Tudástár";
+			const themeColor = "#dbb700"; // #ffd700
 
 			window.$docsify = {
 				// General
 				name: name,
 				repo: repo,
-				themeColor: "#ffd700",
+				themeColor: themeColor,
+				// Options
+				coverpage: "hu-hu/navigation/coverpage.md",
+				homepage: "hu-hu/introduction.md",
+				loadSidebar: "hu-hu/navigation/sidebar.md",
+				loadNavbar: false,
+				changelog: "CHANGELOG.md",
 				// Navigation
 				auto2top: true,
 				maxLevel: 3,
 				subMaxLevel: 3,
 				// Plugins
 				formatUpdated: "{YYYY}-{MM}-{DD} {HH}:{MM}:{ss}",
-				requestHeaders: {
-					"cache-control": "max-age=0",
-				},
 				"flexible-alerts": {
 					style: "callout",
 				},
+				tabs: {
+					theme: "material", // default
+				},
+				search: {
+					depth: 6,
+					noData: "Nincs találat!",
+					placeholder: "Keresés...",
+				},
+				editLink: {
+					text: "Edit on GitHub",
+					repo: repo,
+					cssClass: "docsify-edit-link mt-5",
+				},
+				pagination: {
+					previousText: "Előző",
+					nextText: "Következő",
+					crossChapter: true,
+					crossChapterText: true,
+				},
+				share: {
+					options: {
+						color: themeColor,
+					},
+					reddit: true,
+					linkedin: true,
+					facebook: true,
+					twitter: true,
+				},
+				autoFooter: {
+					name: "LAIDBACK",
+					copyYear: 2021,
+					url: "https://laidback.hu",
+					onBody: false,
+				},
+				plugins: [
+					(hook, vm) => {
+						hook.beforeEach((html) => {
+							return html;
+						});
+						hook.ready(() => {
+							const btn = document.querySelector("#btn-ab");
+
+							const getCookie = (cookieName) => {
+								const name = cookieName + "=";
+								const cookieParts = document.cookie.split(";");
+								for (let i = 0; i < cookieParts.length; i++) {
+									let part = cookieParts[i];
+									while (part.charAt(0) == " ") {
+										part = part.substring(1);
+									}
+									if (part.indexOf(name) == 0) {
+										return part.substring(name.length, part.length);
+									}
+								}
+								return "";
+							};
+
+							const checkCookie = () => {
+								const netlifyCookie = getCookie("nf_ab");
+								if (netlifyCookie) {
+									btn.dataset.ab = "true";
+									btn.innerHTML = "Opt-out";
+									btn.classList.add("active");
+								}
+							};
+
+							window.addEventListener("load", () => {
+								checkCookie();
+							});
+
+							const buttonHandler = (button, callback) => {
+								if (!button) return;
+								button.addEventListener(
+									"click",
+									(event) => {
+										event.preventDefault();
+										callback();
+									},
+									false,
+								);
+							};
+
+							buttonHandler(btn, () => {
+								switch (btn.innerHTML) {
+									case "Opt-in":
+										alert("Mostantól tagja vagy a programnak!");
+										btn.dataset.ab = "true";
+										btn.innerHTML = "Opt-out";
+										btn.classList.add("active");
+
+										const now = new Date();
+										const expires = now.getTime() + 1000 * 3600 * 24 * 365;
+
+										now.setTime(expires);
+
+										document.cookie = `nf_ab=test; expires=${now.toUTCString()}`;
+
+										location.reload();
+										break;
+
+									case "Opt-out":
+										alert("Sikeresen kiléptél a programból!");
+										btn.dataset.ab = "false";
+										btn.innerHTML = "Opt-in";
+										document.cookie = "nf_ab=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+
+										location.reload();
+										break;
+								}
+							});
+						});
+					},
+				],
 				requestHeaders: {
 					"cache-control": "max-age=0",
 				},
@@ -38,5 +182,28 @@
 		</script>
 		<!-- Docsify v4 -->
 		<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/emoji.min.js"></script>
+		<script src="//unpkg.com/docsify-edit-link@^1"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-copy-code"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/main.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@3/dist/docsify-themeable/index.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+		<script src="//unpkg.com/prismjs/components/prism-csharp.min.js"></script>
+		<script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
+		<script src="//unpkg.com/docsify-fontawesome/dist/docsify-fontawesome.min.js"></script>
+		<script src="//unpkg.com/@markbattistella/docsify-sidebarfooter@latest"></script>
+		<script src="//unpkg.com/docsify-share/build/index.min.js"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-example-panels"></script>
+		<script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+		<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+		<script src="//unpkg.com/prismjs/components/prism-csharp.min.js"></script>
+		<!-- Optional -->
+		<script defer src="/assets/js/app.js"></script>
+		<script defer src="/assets/js/pwa.js"></script>
+		<script defer src="/assets/js/register.js"></script>
+		<script defer src="/assets/js/theme-switcher.js"></script>
 	</body>
 </html>

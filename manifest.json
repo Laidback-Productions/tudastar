@@ -1,0 +1,38 @@
+{
+	"short_name": "Tudástár",
+	"name": "Tudástár a gyűjtőhely hasznos tananyagok számára.",
+	"icons": [
+	  {
+		"src": "assets/resources/icons-192.png",
+		"type": "image/png",
+		"sizes": "192x192"
+	  },
+	  {
+		"src": "assets/resources/icons-512.png",
+		"type": "image/png",
+		"sizes": "512x512"
+	  }
+	],
+	"start_url": "/?source=pwa",
+	"background_color": "#dbb700",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#dbb700",
+	"shortcuts": [
+	  {
+		"name": "Hungarian writeups",
+		"short_name": "HU",
+		"description": "View the hungarian version of the website.",
+		"url": "/?source=pwa",
+		"icons": [{ "src": "/assets/resources/hun.png", "sizes": "192x192" }]
+	  },
+	  {
+		"name": "Internatinal writeups",
+		"short_name": "EN",
+		"description": "View the english version of the website.",
+		"url": "/en-us?source=pwa",
+		"icons": [{ "src": "/assets/resources/intl.png", "sizes": "192x192" }]
+	  }
+	],
+	"description": "Tudástár, a gyűjtőhely hasznos tananyagok számára."
+  }
