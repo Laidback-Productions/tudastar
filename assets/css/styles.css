@@ -18,6 +18,7 @@
 	--docsify-example-panels-title-background: transparent;
 	/* Custom Variables */
 	--theme-color: rgba(219, 183, 0, 1);
+	--theme-font-color: rgba(42, 42, 42, 1);
 	--theme-active-color: rgba(219, 26, 0, 0.7);
 }
 
@@ -25,7 +26,6 @@
 	font-size: 32px;
 	align-items: center;
 	position: absolute;
-	/* width: 50%; */
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);

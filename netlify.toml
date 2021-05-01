@@ -14,4 +14,7 @@
   status = 200
 
 [dev]
+  framework="#custom"
+  command="docsify serve -p 1337"
+  targetPort=1337
   publish = "./"
